@@ -7,11 +7,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
 	"github.com/julienschmidt/httprouter"
 )
-
-var credentials = make(map[string]string)
 
 func Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	body, err := io.ReadAll(r.Body)
@@ -25,11 +24,11 @@ func Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		handleError(err, "Oops, signup failure", w)
 		return
 	}
-	if credentials[user.Username] != "" {
+	if db.GetUser(user.Username).Username != "" {
 		handleError(errors.New("username exists"), "Username already exists", w)
 		return
 	}
-	credentials[user.Username] = user.Password
+	db.RegisterUser(user)
 	w.WriteHeader(200)
 	w.Write([]byte(`{"status": "OK"}`))
 }
