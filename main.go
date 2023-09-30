@@ -23,7 +23,7 @@ func main() {
 	router.RedirectFixedPath = true
 	router.RedirectTrailingSlash = true
 	router.POST("/api/register", auth.Register)
-	//router.POST("/api/login", auth.Login)
+	router.POST("/api/login", auth.Login)
 	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
 
 	router.GET("/", index)
