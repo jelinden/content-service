@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strconv"
 
 	"github.com/golang-jwt/jwt"
@@ -24,7 +22,8 @@ func main() {
 	router := httprouter.New()
 	router.RedirectFixedPath = true
 	router.RedirectTrailingSlash = true
-	router.POST("/api/register", auth.Register)
+	router.GlobalOPTIONS = http.HandlerFunc(globalOptionsHandler)
+	router.POST("/api/register", CorsMiddleware(auth.Register))
 	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
 
@@ -52,12 +51,14 @@ func protectedEndpoint(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
-func currentDirectory() string {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
+func globalOptionsHandler(w http.ResponseWriter, req *http.Request) {
+	if req.Header.Get("Access-Control-Request-Method") != "" {
+		header := w.Header()
+		header.Set("Access-Control-Allow-Methods", header.Get("Allow"))
+		header.Set("Access-Control-Allow-Headers", req.Header.Get("Access-Control-Request-Headers"))
+		header.Set("Access-Control-Allow-Origin", "*")
 	}
-	return filepath.Dir(ex)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func CorsMiddleware(next http.HandlerFunc) httprouter.Handle {
