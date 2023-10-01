@@ -15,21 +15,31 @@ func init() {
 	secretKey = os.Getenv("JWT_KEY")
 }
 
-type JwtToken struct {
-	Token string `json:"token"`
-}
-
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user domain.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(Exception{Message: err.Error()})
 		return
 	}
 	if validateCredentials(user) {
-		json.NewEncoder(w).Encode(JwtToken{Token: signedTokenString(domain.User{Username: user.Username})})
+
+		authCookie := http.Cookie{
+			Name:     "content-service",
+			Path:     "/",
+			MaxAge:   3600,
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteLaxMode,
+			Value:    signedTokenString(domain.User{Username: user.Username}),
+		}
+		http.SetCookie(w, &authCookie)
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode("OK")
 		return
 	}
+	w.WriteHeader(http.StatusForbidden)
 	json.NewEncoder(w).Encode(Exception{Message: "invalid credentials"})
 }
 

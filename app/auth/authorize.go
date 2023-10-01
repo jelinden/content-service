@@ -20,9 +20,14 @@ func init() {
 
 func AuthorizeMiddleware(next http.HandlerFunc) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-		authorizationHeader := req.Header.Get("Authorization")
-		if authorizationHeader != "" {
-			bearerToken := strings.Split(authorizationHeader, " ")
+		authCookie, err := req.Cookie("content-service")
+		if err != nil {
+			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
+			return
+		}
+		authorization := authCookie.Value
+		if authorization != "" {
+			bearerToken := strings.Split(authorization, " ")
 			if len(bearerToken) == 2 {
 				token, err := parseBearerToken(bearerToken[1])
 				if err != nil {
@@ -38,7 +43,7 @@ func AuthorizeMiddleware(next http.HandlerFunc) httprouter.Handle {
 				return
 			}
 		}
-		json.NewEncoder(w).Encode(Exception{Message: "An Authorization header is required"})
+		json.NewEncoder(w).Encode(Exception{Message: "Authorization is required"})
 	})
 }
 
