@@ -9,10 +9,9 @@ import (
 
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
-	"github.com/julienschmidt/httprouter"
 )
 
-func Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Register(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		handleError(err, "Oops, signup failure", w)
