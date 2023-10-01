@@ -30,7 +30,7 @@ func GetUser(email string) domain.User {
 	var user domain.User
 	err = stmt.QueryRow(email).Scan(&user.Username, &user.Password)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	stmt.Close()
 	fmt.Println("got user", user.Username)

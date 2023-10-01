@@ -9,7 +9,6 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
-	"github.com/julienschmidt/httprouter"
 )
 
 func init() {
@@ -20,7 +19,7 @@ type JwtToken struct {
 	Token string `json:"token"`
 }
 
-func Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Login(w http.ResponseWriter, r *http.Request) {
 	var user domain.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {

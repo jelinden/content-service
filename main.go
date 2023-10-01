@@ -11,6 +11,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/context"
 	"github.com/jelinden/content-service/app/auth"
+	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
 	"github.com/julienschmidt/httprouter"
 	"github.com/mitchellh/mapstructure"
@@ -19,11 +20,12 @@ import (
 const port = 8700
 
 func main() {
+	db.Init()
 	router := httprouter.New()
 	router.RedirectFixedPath = true
 	router.RedirectTrailingSlash = true
 	router.POST("/api/register", auth.Register)
-	router.POST("/api/login", auth.Login)
+	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
 
 	router.GET("/", index)
@@ -56,4 +58,11 @@ func currentDirectory() string {
 		panic(err)
 	}
 	return filepath.Dir(ex)
+}
+
+func CorsMiddleware(next http.HandlerFunc) httprouter.Handle {
+	return httprouter.Handle(func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+		next(w, req)
+	})
 }
