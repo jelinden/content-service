@@ -1,4 +1,5 @@
 node_modules
 content-service
-public
+public/*
+!frontend/public
 content-service.db
