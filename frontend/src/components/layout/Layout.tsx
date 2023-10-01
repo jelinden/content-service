@@ -9,9 +9,9 @@ const Layout =({children} : Props) =>{
         <>
             <div>
                 <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/register">Register</Link></li>
-                    <li><Link to="/login">Login</Link></li>
+                    <li className='links'><Link to="/">Home</Link></li>
+                    <li className='links'><Link to="/register">Register</Link></li>
+                    <li className='links'><Link to="/login">Login</Link></li>
                 </ul>
             </div>
             <main>{children}</main>

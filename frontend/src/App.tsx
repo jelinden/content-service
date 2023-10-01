@@ -2,10 +2,10 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Layout from './components/layout/Layout';
+import Login from './components/login/Login'
 import './App.css';
 
 function App() {
@@ -28,10 +28,6 @@ function Home() {
 
 function Register() {
   return <h2>Register</h2>;
-}
-
-function Login() {
-  return <h2>Login</h2>;
 }
 
 export default App;

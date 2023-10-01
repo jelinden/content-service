@@ -23,11 +23,46 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
+
+label {
+  width: 140px;
+  display: inline-block;
+  padding: 5px;
+}
+
+#login-button {
+  margin: 5px;
+  padding: 8px 15px 8px 15px;
+}
+
+button {
+  background-color: #00719c;
+  color:#ffffff;
+  border: none;
+}
+
+.links {
+  display: inline-block;
+  padding-right: 15px;
+}
+
+@keyframes spinner {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
+}
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #00719c;
+  border-radius: 50%;
+  animation: spinner 0.5s linear infinite;
+  
+}
+.spinner-container {
+  margin: 100px;
 }
