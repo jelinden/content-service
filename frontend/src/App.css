@@ -30,7 +30,7 @@ label {
   padding: 5px;
 }
 
-#login-button {
+#login-button, #register-button {
   margin: 5px;
   padding: 8px 15px 8px 15px;
 }

@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Layout from './components/layout/Layout';
 import Login from './components/login/Login'
+import Register from './components/register/Register'
 import './App.css';
 
 function App() {
@@ -24,10 +25,6 @@ function App() {
 
 function Home() {
   return <h2>Home</h2>;
-}
-
-function Register() {
-  return <h2>Register</h2>;
 }
 
 export default App;
