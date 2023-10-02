@@ -3,3 +3,5 @@ content-service
 public/*
 !frontend/public
 content-service.db
+content-service-arm
+content-service-linux
