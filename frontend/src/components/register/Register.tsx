@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import Post from '../service/http';
 
 const Register = () => {
 
     const [isLoading, setLoading] = useState(false);
+    const [error, setError] = useState<Error>();
+    const navigate = useNavigate();
 
     const registerSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -16,23 +19,24 @@ const Register = () => {
         Post('register', JSON.stringify({username, password}))
         .then(res => {
             setLoading(false);
-            console.log('registering succeeded', res);
+            navigate("/login");
 
         }).catch((err: Error) => {
             setLoading(false);
+            setError(err)
             console.log('an error occurred', err);
         })
     }
     
     return (
         <>
-            {isLoading &&
+            {isLoading && !error &&
                 <div className="spinner-container">
                     <div className="loading-spinner" />
                 </div>
             }
 
-            {!isLoading &&
+            {!isLoading && !error &&
             <>
                 <h1>Register</h1>
                 <form onSubmit={registerSubmit}>
@@ -47,6 +51,10 @@ const Register = () => {
                     <button id="register-button" type="submit">Register</button>
                 </form>
             </>
+            }
+
+            {!isLoading && error &&
+                <div>Oops</div>
             }
         </>
     )
