@@ -9,6 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
+	"github.com/jelinden/content-service/app/util"
 )
 
 func init() {
@@ -44,6 +45,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func validateCredentials(user domain.User) bool {
+	var err error
+	user.HashedPassword, err = util.HashPassword(user.Password)
+	if err != nil {
+		log.Println(err)
+	}
 	return db.GetUser(user.Username).Password == user.Password
 }
 

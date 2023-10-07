@@ -50,7 +50,7 @@ func RegisterUser(user domain.User) domain.User {
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(user.Username, user.Password)
+	_, err = stmt.Exec(user.Username, user.HashedPassword)
 	if err != nil {
 		log.Fatal(err)
 	}

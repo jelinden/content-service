@@ -9,6 +9,7 @@ import (
 
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
+	"github.com/jelinden/content-service/app/util"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -19,6 +20,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 	var user domain.User
 	err = json.Unmarshal(body, &user)
+	if err != nil {
+		handleError(err, "Oops, signup failure", w)
+		return
+	}
+	user.HashedPassword, err = util.HashPassword(user.Password)
 	if err != nil {
 		handleError(err, "Oops, signup failure", w)
 		return
