@@ -5,6 +5,7 @@ build:
 	GOARCH=arm64 GOOS=darwin go build -o ${BINARY_NAME}-arm main.go
 
 run-local:
+	cd frontend && npm run build && cd ..
 	go build -o ${BINARY_NAME} main.go
 	./${BINARY_NAME}
 
