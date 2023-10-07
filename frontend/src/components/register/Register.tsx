@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Post from '../service/http';
+import validateFields from './ValidateFields';
 
 const Register = () => {
 
@@ -12,9 +13,18 @@ const Register = () => {
         event.preventDefault();
         const form = new FormData(event.currentTarget)
 
-        const username = form.get('username');
-        const password = form.get('password');
-        // TODO: validate
+        const username = form.get('username')?.toString();
+        const password = form.get('password')?.toString();
+        var usernameError = document.getElementById('usernameError') as HTMLElement
+        var passwordError = document.getElementById('passwordError') as HTMLElement
+        const validationErrors = validateFields(username ? username : '', password ? password : '')
+        
+        if (validationErrors.username !== '' || validationErrors.password !== '') {
+            usernameError.innerHTML = validationErrors.username
+            passwordError.innerHTML = validationErrors.password
+            return
+        }
+
         setLoading(true);
         Post('register', JSON.stringify({username, password}))
         .then(res => {
@@ -41,12 +51,19 @@ const Register = () => {
                 <h1>Register</h1>
                 <form onSubmit={registerSubmit}>
                     <div>
+                        <label htmlFor="username" id="usernameError"></label>
                         <label htmlFor="username">Username/Email</label>
-                        <input type="text" name="username" id="username"/>
+                        <input type="text" name="username" id="username" required/>
                     </div>
                     <div>
+                        <label htmlFor="password" id="passwordError"></label>
                         <label htmlFor="password">Password</label>
-                        <input type="text" name="password" id="password"/>
+                        <input 
+                            type="text" 
+                            name="password" 
+                            id="password"
+                            required
+                        />
                     </div>
                     <button id="register-button" type="submit">Register</button>
                 </form>
@@ -54,7 +71,11 @@ const Register = () => {
             }
 
             {!isLoading && error &&
-                <div>Oops</div>
+                <div className="errors">
+                    <div>Oops, an error occurred. Please try again.</div>
+                    <br />
+                    <Link to="/register" onClick={() => window.location.reload()}>Back to register page</Link>
+                </div>
             }
         </>
     )
