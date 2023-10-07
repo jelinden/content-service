@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
 	"github.com/jelinden/content-service/app/util"
@@ -45,12 +45,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func validateCredentials(user domain.User) bool {
-	var err error
-	user.HashedPassword, err = util.HashPassword(user.Password)
-	if err != nil {
-		log.Println(err)
-	}
-	return db.GetUser(user.Username).Password == user.Password
+	return util.CheckPasswordHash(user.Password, db.GetUser(user.Username).Password)
 }
 
 func signedTokenString(user domain.User) string {

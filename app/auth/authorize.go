@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	jwt "github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/context"
@@ -22,27 +21,28 @@ func AuthorizeMiddleware(next http.HandlerFunc) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		authCookie, err := req.Cookie("content-service")
 		if err != nil {
+			w.WriteHeader(http.StatusForbidden)
 			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
 			return
 		}
 		authorization := authCookie.Value
 		if authorization != "" {
-			bearerToken := strings.Split(authorization, " ")
-			if len(bearerToken) == 2 {
-				token, err := parseBearerToken(bearerToken[1])
-				if err != nil {
-					json.NewEncoder(w).Encode(Exception{Message: err.Error()})
-					return
-				}
-				if token.Valid {
-					context.Set(req, "decoded", token.Claims)
-					next(w, req)
-					return
-				}
-				json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
+			token, err := parseBearerToken(authorization)
+			if err != nil {
+				w.WriteHeader(http.StatusForbidden)
+				json.NewEncoder(w).Encode(Exception{Message: err.Error()})
 				return
 			}
+			if token.Valid {
+				context.Set(req, "decoded", token.Claims)
+				next(w, req)
+				return
+			}
+			w.WriteHeader(http.StatusForbidden)
+			json.NewEncoder(w).Encode(Exception{Message: "Invalid Authorization token"})
+			return
 		}
+		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(Exception{Message: "Authorization is required"})
 	})
 }

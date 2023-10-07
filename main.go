@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/context"
 	"github.com/jelinden/content-service/app/auth"
 	"github.com/jelinden/content-service/app/db"
@@ -28,6 +28,8 @@ func main() {
 	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
 
 	router.GET("/", index)
+	router.GET("/register", index)
+	router.GET("/login", index)
 	router.GET("/health", health)
 
 	router.Handler("GET", "/static/*filepath", http.FileServer(http.Dir("public")))
@@ -46,6 +48,7 @@ func health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 func protectedEndpoint(w http.ResponseWriter, req *http.Request) {
 	decoded := context.Get(req, "decoded")
+	log.Println(decoded)
 	var user domain.User
 	mapstructure.Decode(decoded.(jwt.MapClaims), &user)
 	json.NewEncoder(w).Encode(user)
