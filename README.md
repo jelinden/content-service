@@ -1,5 +1,12 @@
 # Project content-service
 
+The purpose of this project is to make a service which has a per user possibility to 
+* register
+* login
+* save an API key for themselfs
+* save key/value pairs and
+* get key/value pairs with the key through an API with an API key
+
 ## run backend
 
 `go build && ./content-service`
