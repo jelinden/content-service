@@ -4,6 +4,7 @@ type User struct {
 	Username       string `json:"username"`
 	Password       string `json:"password"`
 	HashedPassword string
+	ApiToken       string `json:"apiToken"`
 }
 
 type Username struct {

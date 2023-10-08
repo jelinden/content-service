@@ -17,14 +17,15 @@ func init() {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	var user domain.User
-	err := json.NewDecoder(r.Body).Decode(&user)
+	var loggingUser domain.User
+	err := json.NewDecoder(r.Body).Decode(&loggingUser)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(Exception{Message: err.Error()})
 		return
 	}
-	if validateCredentials(user) {
+	user := db.GetUser(loggingUser.Username)
+	if validateCredentials(loggingUser, user) {
 
 		authCookie := http.Cookie{
 			Name:     "content-service",
@@ -33,7 +34,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			HttpOnly: true,
 			Secure:   true,
 			SameSite: http.SameSiteLaxMode,
-			Value:    signedTokenString(domain.User{Username: user.Username}),
+			Value:    signedTokenString(domain.User{Username: loggingUser.Username, ApiToken: user.ApiToken}),
 		}
 		http.SetCookie(w, &authCookie)
 		w.WriteHeader(http.StatusOK)
@@ -44,17 +45,33 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Exception{Message: "invalid credentials"})
 }
 
-func validateCredentials(user domain.User) bool {
-	return util.CheckPasswordHash(user.Password, db.GetUser(user.Username).Password)
+func validateCredentials(logginUser domain.User, user domain.User) bool {
+	return util.CheckPasswordHash(logginUser.Password, user.Password)
 }
 
 func signedTokenString(user domain.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS384, jwt.MapClaims{
 		"username": user.Username,
+		"apiToken": user.ApiToken,
 	})
 	tokenString, err := token.SignedString([]byte(secretKey))
 	if err != nil {
 		log.Println(err)
 	}
 	return tokenString
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	authCookie := http.Cookie{
+		Name:     "content-service",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+		Value:    "",
+	}
+	http.SetCookie(w, &authCookie)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode("OK")
 }

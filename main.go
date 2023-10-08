@@ -25,6 +25,7 @@ func main() {
 	router.GlobalOPTIONS = http.HandlerFunc(globalOptionsHandler)
 	router.POST("/api/register", CorsMiddleware(auth.Register))
 	router.POST("/api/login", CorsMiddleware(auth.Login))
+	router.POST("/api/logout", CorsMiddleware(auth.Logout))
 	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
 
 	router.GET("/", index)

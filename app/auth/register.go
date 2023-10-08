@@ -24,6 +24,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		handleError(err, "Oops, signup failure", w)
 		return
 	}
+	user.ApiToken = util.GenerateToken(user.Username)
 	user.HashedPassword, err = util.HashPassword(user.Password)
 	if err != nil {
 		handleError(err, "Oops, signup failure", w)

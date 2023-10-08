@@ -27,9 +27,12 @@ func testRegister(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	user := RegisterUser(domain.User{Username: email, Password: password, HashedPassword: password})
+	apiToken := util.GenerateToken(email)
+	fmt.Println(apiToken)
+	user := RegisterUser(domain.User{Username: email, Password: password, HashedPassword: password, ApiToken: apiToken})
 	assert.True(t, user.Username == email)
 	assert.True(t, user.Password == password)
+	fmt.Println("apiToken", user.ApiToken)
 	defer RemoveUser(email)
 }
 

@@ -29,7 +29,7 @@ func Close() {
 
 func createUserTable() {
 	sqlStmt := `
-		create table if not exists user (email text not null primary key, password text);
+		create table if not exists user (email text not null primary key, password text, apitoken text);
 	`
 	_, err := db.Exec(sqlStmt)
 	if err != nil {

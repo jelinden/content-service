@@ -20,20 +20,20 @@ func Init() {
 
 func GetUser(email string) domain.User {
 	db := DB()
-	fmt.Println("getting user", email)
-	stmt, err := db.Prepare("select email as username, password from user where email = ?")
+	log.Println("getting user", email)
+	stmt, err := db.Prepare("select email as username, password, apitoken from user where email = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
 	var user domain.User
-	err = stmt.QueryRow(email).Scan(&user.Username, &user.Password)
+	err = stmt.QueryRow(email).Scan(&user.Username, &user.Password, &user.ApiToken)
 	if err != nil {
 		log.Println(err)
 	}
 	stmt.Close()
-	fmt.Println("got user", user.Username)
+	log.Println("got user", user.Username)
 	return user
 }
 
@@ -44,13 +44,13 @@ func RegisterUser(user domain.User) domain.User {
 		log.Fatal(err)
 	}
 
-	stmt, err := tx.Prepare("insert into user(email, password) values(?, ?)")
+	stmt, err := tx.Prepare("insert into user(email, password, apitoken) values(?, ?, ?)")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(user.Username, user.HashedPassword)
+	_, err = stmt.Exec(user.Username, user.HashedPassword, user.ApiToken)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func RegisterUser(user domain.User) domain.User {
 
 func RemoveUser(email string) bool {
 	db := DB()
-	fmt.Println("removing user", email)
+	log.Println("removing user", email)
 	stmt, err := db.Prepare("delete from user where email = ?")
 	if err != nil {
 		log.Fatal(err)
@@ -79,6 +79,6 @@ func RemoveUser(email string) bool {
 
 	stmt.Close()
 
-	fmt.Println("removed user", email)
+	log.Println("removed user", email)
 	return true
 }
