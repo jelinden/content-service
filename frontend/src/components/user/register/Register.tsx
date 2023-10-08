@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import Post from '../service/http';
+import {Post} from '../../service/http';
 import validateFields from './ValidateFields';
 
 const Register = () => {
@@ -59,7 +59,7 @@ const Register = () => {
                         <label htmlFor="password" id="passwordError"></label>
                         <label htmlFor="password">Password</label>
                         <input 
-                            type="text" 
+                            type="password" 
                             name="password" 
                             id="password"
                             required

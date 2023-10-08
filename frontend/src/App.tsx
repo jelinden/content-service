@@ -1,30 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react'
 import {
   BrowserRouter as Router,
   Routes,
   Route
-} from "react-router-dom";
-import Layout from './components/layout/Layout';
-import Login from './components/login/Login'
-import Register from './components/register/Register'
-import './App.css';
+} from "react-router-dom"
+import Layout from './components/layout/Layout'
+import Profile from './components/user/Profile'
+import Login from './components/user/login/Login'
+import Register from './components/user/register/Register'
+import Home from './components/Home'
+import { AppContextProvider } from './components/context/AppContext'
+import './App.css'
 
 function App() {
+
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Layout>
+      <AppContextProvider>
+        <Layout>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </Layout>
+      </AppContextProvider>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
 
 export default App;

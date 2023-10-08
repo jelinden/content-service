@@ -2,7 +2,7 @@
 const domain = window.location.hostname;
 const port = 8700;
 
-const Post = (endpoint: string, body: string): Promise<Response> => {
+export const Post = (endpoint: string, body: string): Promise<Response> => {
     let url = `http://${domain}:${port}/api/${endpoint}`;
     const requestOptions = {
         method: 'POST',
@@ -10,7 +10,25 @@ const Post = (endpoint: string, body: string): Promise<Response> => {
         body: body
     };
     return fetch(url, requestOptions)
-        .then(response => response.json());
+        .then(response => {
+            if (response.status > 204) {
+                throw new Error('Not authorized')
+            }
+            return response.json()
+        });
 }
 
-export default Post
+export const Get = (endpoint: string): Promise<Object> => {
+    let url = `http://${domain}:${port}/api/${endpoint}`;
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (response.status > 204) {
+                throw new Error('Not authorized')
+            }
+            return response.json()
+        });
+}
