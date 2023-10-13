@@ -5,3 +5,4 @@ public/*
 content-service.db
 content-service-arm
 content-service-linux
+app/db/content-service-test.db
