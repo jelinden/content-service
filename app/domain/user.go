@@ -1,9 +1,10 @@
 package domain
 
 type User struct {
+	ID             int64  `json:"id" db:"id"`
 	Username       string `json:"username"`
 	Password       string `json:"password"`
-	HashedPassword string
+	HashedPassword string `json:"-"`
 	ApiToken       string `json:"apiToken"`
 }
 

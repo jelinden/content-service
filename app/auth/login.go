@@ -34,7 +34,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			HttpOnly: true,
 			Secure:   true,
 			SameSite: http.SameSiteLaxMode,
-			Value:    signedTokenString(domain.User{Username: loggingUser.Username, ApiToken: user.ApiToken}),
+			Value:    signedTokenString(domain.User{ID: loggingUser.ID, Username: loggingUser.Username, ApiToken: user.ApiToken}),
 		}
 		http.SetCookie(w, &authCookie)
 		w.WriteHeader(http.StatusOK)
@@ -51,6 +51,7 @@ func validateCredentials(logginUser domain.User, user domain.User) bool {
 
 func signedTokenString(user domain.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS384, jwt.MapClaims{
+		"id":       user.ID,
 		"username": user.Username,
 		"apiToken": user.ApiToken,
 	})

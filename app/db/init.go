@@ -29,7 +29,9 @@ func Close() {
 
 func createUserTable() {
 	sqlStmt := `
-		create table if not exists user (email text not null primary key, password text, apitoken text);
+		create table if not exists user (id integer primary key, email text not null unique, password text, apitoken text);
+		create table if not exists space (id integer primary key, user_id integer not null, name text not null);
+		create table if not exists content (id integer primary key, space_id integer not null, key text not null, value text);
 	`
 	_, err := db.Exec(sqlStmt)
 	if err != nil {

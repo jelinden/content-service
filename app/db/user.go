@@ -21,14 +21,14 @@ func Init() {
 func GetUser(email string) domain.User {
 	db := DB()
 	log.Println("getting user", email)
-	stmt, err := db.Prepare("select email as username, password, apitoken from user where email = ?")
+	stmt, err := db.Prepare("select id, email as username, password, apitoken from user where email = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
 	var user domain.User
-	err = stmt.QueryRow(email).Scan(&user.Username, &user.Password, &user.ApiToken)
+	err = stmt.QueryRow(email).Scan(&user.ID, &user.Username, &user.Password, &user.ApiToken)
 	if err != nil {
 		log.Println(err)
 	}

@@ -9,34 +9,32 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func beforeUserTest() {
+func beforeTest() {
 	dbFileName = "./content-service-test.db"
 	Init()
 }
 
-func TestRunUser(t *testing.T) {
-	beforeUserTest()
-	testRegister(t)
-	defer postTestUser()
+func TestRunSpace(t *testing.T) {
+	beforeTest()
+	testAddSpace(t)
+	defer postTestSpace()
 }
 
-func testRegister(t *testing.T) {
+func testAddSpace(t *testing.T) {
 	fmt.Println(dbFileName)
 
 	const email = "test@email.localhost"
 	password, err := util.HashPassword("hashedpassword")
+	const spaceName = "myspace"
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
 	apiToken := util.GenerateToken(email)
-	fmt.Println(apiToken)
-	user := RegisterUser(domain.User{Username: email, Password: password, HashedPassword: password, ApiToken: apiToken})
-	assert.True(t, user.Username == email)
-	assert.True(t, user.Password == password)
-	fmt.Println("apiToken", user.ApiToken)
-	defer RemoveUser(email)
+	space := AddSpace(domain.User{Username: email, Password: password, HashedPassword: password, ApiToken: apiToken}, spaceName)
+	assert.True(t, space.Name == spaceName)
+	defer RemoveSpace(space.ID)
 }
 
-func postTestUser() {
+func postTestSpace() {
 	removeDB(dbFileName)
 }
