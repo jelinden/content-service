@@ -32,3 +32,18 @@ export const Get = (endpoint: string): Promise<Object> => {
             return response.json()
         });
 }
+
+export const Delete = (endpoint: string, id: number): Promise<Object> => {
+    let url = `http://${domain}:${port}/api/${endpoint}/${id}`;
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    };
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (response.status > 204) {
+                throw new Error('Not authorized')
+            }
+            return response.json()
+        });
+}

@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Get, Post, Delete } from '../service/http'
+import { Get, Post } from '../service/http'
 
-interface Space {
+interface Content {
     id: number
-    spaceName: string
+    contentKey: string
+    contentValue: string
 }
 
-const Spaces = () => {
+const Content = () => {
     const { app } = useContext(AppContext);
     const userId = app?.id!!
-    const [ spaces = [], updateSpaces ] = useState<Space[]>();
+    const [spaces = [], updateSpaces ] = useState<Content[]>();
 
     const newSpace = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = new FormData(event.currentTarget)
         const spaceName = form.get("name")
+        console.log('name', spaceName, userId)
         if (userId > -1 && spaceName) {
             Post('space', JSON.stringify({userId, spaceName}))
             .then(res => {
@@ -28,20 +30,12 @@ const Spaces = () => {
 
     const removeSpace = (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        const id = (event.currentTarget as HTMLButtonElement).value
-        Delete('space', parseInt(id, 10))
-            .then(res => {
-                getSpaces()
-        })
-        .catch(err => {
-            console.log(err)
-        })
     }
 
     const getSpaces = () => {
         Get('spaces')
         .then(res => {
-            const spaces = res as Space[]
+            const spaces = res as Content[]
             updateSpaces(spaces)
         })
         .catch(err => {
@@ -62,9 +56,8 @@ const Spaces = () => {
                 spaces &&
                 spaces.map((d) => (
                     <div key={d.id} style={{lineHeight: '35px', width: '400px', display: 'flex', justifyContent: 'space-between'}}>
-                        <span>{d.spaceName}</span>
-                        <button value={d.id} style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '10px'}} 
-                            onClick={removeSpace} type="button">Remove</button>
+                        <span>{d.contentKey}</span>
+                        <button style={{marginLeft: '15px', height: '24px', display: 'inline-block'}} onSubmit={removeSpace} type="button">Remove</button>
                     </div>
                 ))
             }
@@ -81,4 +74,4 @@ const Spaces = () => {
     )
 }
 
-export default Spaces
+export default Content
