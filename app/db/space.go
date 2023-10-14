@@ -6,7 +6,7 @@ import (
 	"github.com/jelinden/content-service/app/domain"
 )
 
-func AddSpace(user domain.User, name string) domain.Space {
+func AddSpace(user domain.User, name string) []domain.Space {
 	db := DB()
 	tx, err := db.Begin()
 	if err != nil {
@@ -29,7 +29,11 @@ func AddSpace(user domain.User, name string) domain.Space {
 		log.Println(err)
 	}
 	stmt.Close()
-	return GetSpace(user.ID)
+	spaces, err := GetSpacesWithUserID(user.ID)
+	if err != nil {
+		log.Println(err)
+	}
+	return spaces
 }
 
 func GetSpacesWithUserID(userID int64) ([]domain.Space, error) {

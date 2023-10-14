@@ -35,6 +35,7 @@ func main() {
 	router.GET("/register", index)
 	router.GET("/login", index)
 	router.GET("/space", index)
+	router.GET("/profile", index)
 	router.GET("/health", health)
 
 	router.Handler("GET", "/static/*filepath", http.FileServer(http.Dir("public")))
@@ -56,6 +57,7 @@ func profile(w http.ResponseWriter, req *http.Request) {
 	log.Println(decoded)
 	var user domain.User
 	mapstructure.Decode(decoded.(jwt.MapClaims), &user)
+	log.Println(user.Username, user.ID)
 	json.NewEncoder(w).Encode(user)
 }
 

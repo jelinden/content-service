@@ -34,7 +34,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			HttpOnly: true,
 			Secure:   true,
 			SameSite: http.SameSiteLaxMode,
-			Value:    signedTokenString(domain.User{ID: loggingUser.ID, Username: loggingUser.Username, ApiToken: user.ApiToken}),
+			Value:    signedTokenString(domain.User{ID: user.ID, Username: loggingUser.Username, ApiToken: user.ApiToken}),
 		}
 		http.SetCookie(w, &authCookie)
 		w.WriteHeader(http.StatusOK)
