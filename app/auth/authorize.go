@@ -17,7 +17,7 @@ func init() {
 	secretKey = os.Getenv("JWT_KEY")
 }
 
-func AuthorizeMiddleware(next http.HandlerFunc) httprouter.Handle {
+func AuthorizeMiddleware(next httprouter.Handle) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		authCookie, err := req.Cookie("content-service")
 		if err != nil {
@@ -35,7 +35,7 @@ func AuthorizeMiddleware(next http.HandlerFunc) httprouter.Handle {
 			}
 			if token.Valid {
 				context.Set(req, "decoded", token.Claims)
-				next(w, req)
+				next(w, req, ps)
 				return
 			}
 			w.WriteHeader(http.StatusForbidden)

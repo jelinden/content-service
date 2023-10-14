@@ -27,9 +27,10 @@ func main() {
 	router.POST("/api/register", CorsMiddleware(auth.Register))
 	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.POST("/api/logout", CorsMiddleware(auth.Logout))
-	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(profile)))
-	router.POST("/api/space", auth.AuthorizeMiddleware(http.HandlerFunc(routes.AddSpace)))
-	router.GET("/api/spaces", auth.AuthorizeMiddleware(http.HandlerFunc(routes.GetSpacesWithUserID)))
+	router.GET("/api/profile", auth.AuthorizeMiddleware(profile))
+	router.POST("/api/space", auth.AuthorizeMiddleware(routes.AddSpace))
+	router.DELETE("/api/space/:id", auth.AuthorizeMiddleware(routes.RemoveSpace))
+	router.GET("/api/spaces", auth.AuthorizeMiddleware(routes.GetSpacesWithUserID))
 
 	router.GET("/", index)
 	router.GET("/register", index)
@@ -52,7 +53,7 @@ func health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte("OK"))
 }
 
-func profile(w http.ResponseWriter, req *http.Request) {
+func profile(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	decoded := context.Get(req, "decoded")
 	log.Println(decoded)
 	var user domain.User
