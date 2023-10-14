@@ -11,6 +11,7 @@ import (
 	"github.com/jelinden/content-service/app/auth"
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
+	"github.com/jelinden/content-service/app/routes"
 	"github.com/julienschmidt/httprouter"
 	"github.com/mitchellh/mapstructure"
 )
@@ -26,11 +27,14 @@ func main() {
 	router.POST("/api/register", CorsMiddleware(auth.Register))
 	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.POST("/api/logout", CorsMiddleware(auth.Logout))
-	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(protectedEndpoint)))
+	router.GET("/api/profile", auth.AuthorizeMiddleware(http.HandlerFunc(profile)))
+	router.POST("/api/space", auth.AuthorizeMiddleware(http.HandlerFunc(routes.AddSpace)))
+	router.GET("/api/spaces", auth.AuthorizeMiddleware(http.HandlerFunc(routes.GetSpacesWithUserID)))
 
 	router.GET("/", index)
 	router.GET("/register", index)
 	router.GET("/login", index)
+	router.GET("/space", index)
 	router.GET("/health", health)
 
 	router.Handler("GET", "/static/*filepath", http.FileServer(http.Dir("public")))
@@ -47,7 +51,7 @@ func health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte("OK"))
 }
 
-func protectedEndpoint(w http.ResponseWriter, req *http.Request) {
+func profile(w http.ResponseWriter, req *http.Request) {
 	decoded := context.Get(req, "decoded")
 	log.Println(decoded)
 	var user domain.User

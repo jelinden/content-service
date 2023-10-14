@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/context"
 	"github.com/jelinden/content-service/app/db"
 	"github.com/jelinden/content-service/app/domain"
