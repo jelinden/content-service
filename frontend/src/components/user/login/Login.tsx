@@ -23,7 +23,6 @@ const Login = () => {
         .then(res => {
             setLoading(false);
             updateState({app: {loggedIn: true}})
-            console.log('login succeeded', res);
             navigate("/");
         }).catch((err: Error) => {
             setLoading(false);

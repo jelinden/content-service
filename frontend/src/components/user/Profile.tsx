@@ -9,6 +9,7 @@ const Profile = () => {
         <>
             <h1>Profile</h1>
 
+            <div>User id: <span>{app?.id}</span></div>
             <div>API token: <span>{app?.apiToken}</span></div>
         </>
     )

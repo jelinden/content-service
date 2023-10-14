@@ -5,6 +5,7 @@ interface Props {
 }
 
 export interface AppContract {
+    id?: number,
     loggedIn: boolean,
     username?: string,
     apiToken?: string

@@ -7,7 +7,8 @@ import { Props } from './LayoutTypeProps';
 import { Get, Post } from '../service/http'
 import { AppContext } from '../context/AppContext';
 
-interface Profile {
+export interface Profile {
+    id: number
     username: string
     apiToken: string
 }
@@ -22,7 +23,7 @@ const Layout =({children} : Props) => {
         Post('logout', "")
         .then(res => {
             if (app?.loggedIn !== false || app.username !== '') {
-                updateState({app: {loggedIn: false, username: '', apiToken: ''}})
+                updateState({app: {id: -1, loggedIn: false, username: '', apiToken: ''}})
             }
             navigate("/");
         }).catch((err: Error) => {
@@ -36,7 +37,7 @@ const Layout =({children} : Props) => {
                 .then(res => {
                     const p = res as Profile
                     if (app?.loggedIn !== true || app.username !== p.username) {
-                        updateState({app: {loggedIn: true, username: p.username, apiToken: p.apiToken}})
+                        updateState({app: {id: p.id, loggedIn: true, username: p.username, apiToken: p.apiToken}})
                     }
                 })
                 .catch(err => {
@@ -55,6 +56,7 @@ const Layout =({children} : Props) => {
                     { app && app.username &&
                         <>
                         <li className='links'><Link to="/profile">Profile</Link></li>
+                        <li className='links'><Link to="/space">Spaces</Link></li>
                         <li className='links'>Logged in as {app.username}</li>
                         <li className='links'><Link to="#" onClick={logout}>Logout</Link></li>
                         </>
