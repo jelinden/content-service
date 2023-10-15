@@ -11,32 +11,32 @@ interface Content {
 const Content = () => {
     const { app } = useContext(AppContext);
     const userId = app?.id!!
-    const [spaces = [], updateSpaces ] = useState<Content[]>();
+    const [content = [], updateContent ] = useState<Content[]>();
 
-    const newSpace = (event: React.FormEvent<HTMLFormElement>) => {
+    const newContent = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = new FormData(event.currentTarget)
-        const spaceName = form.get("name")
-        console.log('name', spaceName, userId)
-        if (userId > -1 && spaceName) {
-            Post('space', JSON.stringify({userId, spaceName}))
+        const contentName = form.get("name")
+
+        if (userId > -1 && contentName) {
+            Post('space', JSON.stringify({userId, contentName}))
             .then(res => {
-                getSpaces()
+                getContent()
             }).catch((err: Error) => {
                 console.log('an error occurred', err);
             })
         }
     }
 
-    const removeSpace = (event: React.FormEvent<HTMLButtonElement>) => {
+    const removeContent = (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
     }
 
-    const getSpaces = () => {
-        Get('spaces')
+    const getContent = () => {
+        Get('content')
         .then(res => {
-            const spaces = res as Content[]
-            updateSpaces(spaces)
+            const content = res as Content[]
+            updateContent(content)
         })
         .catch(err => {
             console.log(err)
@@ -44,7 +44,7 @@ const Content = () => {
     }
 
     useEffect(() => {
-        getSpaces()
+        getContent()
     }, [])
 
     return (
@@ -53,19 +53,21 @@ const Content = () => {
 
             <h2>Your spaces</h2>
             {
-                spaces &&
-                spaces.map((d) => (
+                content &&
+                content.map((d) => (
                     <div key={d.id} style={{lineHeight: '35px', width: '400px', display: 'flex', justifyContent: 'space-between'}}>
-                        <span>{d.contentKey}</span>
-                        <button style={{marginLeft: '15px', height: '24px', display: 'inline-block'}} onSubmit={removeSpace} type="button">Remove</button>
+                        <span>{d.contentKey}</span><span>{d.contentValue}</span>
+                        <button style={{marginLeft: '15px', height: '24px', display: 'inline-block'}} onSubmit={removeContent} type="button">Remove</button>
                     </div>
                 ))
             }
             <br />
-            <h2>Add a new Space</h2>
-            <form onSubmit={newSpace}>
-                <label htmlFor="name">Space name</label>
+            <h2>Add Content name and value</h2>
+            <form onSubmit={newContent}>
+                <label htmlFor="name">Content name</label>
                 <input id="name" type="text" name="name" />
+                <label htmlFor="name">Content value</label>
+                <input id="value" type="text" name="value" />
                 <button id="login-button" type="submit">Create</button>
             </form>
 
