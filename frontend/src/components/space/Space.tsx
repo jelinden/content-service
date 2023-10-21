@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import React, { useState, useEffect, useContext } from 'react'
+import { Link } from "react-router-dom"
+import { AppContext } from '../context/AppContext'
 import { Get, Post, Delete } from '../service/http'
 
 interface Space {
@@ -62,9 +63,11 @@ const Spaces = () => {
                 spaces &&
                 spaces.map((d) => (
                     <div key={d.id} style={{lineHeight: '35px', width: '400px', display: 'flex', justifyContent: 'space-between'}}>
-                        <span>{d.spaceName}</span>
-                        <button value={d.id} style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '10px'}} 
-                            onClick={removeSpace} type="button">Remove</button>
+                        <Link to={`/content/${d.id}`}><span>{d.spaceName}</span></Link>
+                        <button value={d.id} 
+                            style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '10px'}} 
+                            onClick={removeSpace} 
+                            type="button">Remove</button>
                     </div>
                 ))
             }
