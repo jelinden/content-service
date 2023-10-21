@@ -31,8 +31,8 @@ func testAddSpace(t *testing.T) {
 	}
 	apiToken := util.GenerateToken(email)
 	space := AddSpace(domain.User{Username: email, Password: password, HashedPassword: password, ApiToken: apiToken}, spaceName)
-	assert.True(t, space.Name == spaceName)
-	defer RemoveSpace(space.ID)
+	assert.True(t, space[0].Name == spaceName)
+	defer RemoveSpace(space[0].ID)
 }
 
 func postTestSpace() {
