@@ -15,9 +15,10 @@ does the following:
 
 `run-local:
 	make clean
-	cd frontend && npm run build && cd .. // run build makes a production build and copies it to be served from go server
-	go build -o content-service-arm main.go // build the binary
-	./content-service-arm` // run the binary
+ 	cd frontend && npm run build && cd .. // run build makes a production build and copies it to be served from go server
+ 	go build -o content-service-arm main.go // build the binary
+ 	./content-service-arm  // run the binary
+ `
 
 
 ## run backend
