@@ -13,7 +13,8 @@ The purpose of this project is to make a service which has a per user possibilit
 
 does the following:
 
-`run-local:
+`
+run-local:
 
 	make clean
  
