@@ -28,14 +28,20 @@ func main() {
 	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.POST("/api/logout", CorsMiddleware(auth.Logout))
 	router.GET("/api/profile", auth.AuthorizeMiddleware(profile))
+
 	router.POST("/api/space", auth.AuthorizeMiddleware(routes.AddSpace))
 	router.DELETE("/api/space/:id", auth.AuthorizeMiddleware(routes.RemoveSpace))
 	router.GET("/api/spaces", auth.AuthorizeMiddleware(routes.GetSpacesWithUserID))
+
+	router.POST("/api/content", auth.AuthorizeMiddleware(routes.AddContent))
+	router.DELETE("/api/content/:id", auth.AuthorizeMiddleware(routes.RemoveContent))
+	router.GET("/api/content/:spaceID", auth.AuthorizeMiddleware(routes.GetContentWithSpaceID))
 
 	router.GET("/", index)
 	router.GET("/register", index)
 	router.GET("/login", index)
 	router.GET("/space", index)
+	router.GET("/content/*catchall", index)
 	router.GET("/profile", index)
 	router.GET("/health", health)
 
