@@ -47,3 +47,8 @@ Then this environment variable is used in authorize.go
 
 `secretKey = os.Getenv("JWT_KEY")`
 
+## tech used
+
+Backend: Golang, router github.com/julienschmidt/httprouter, database sqlite, JWT tokens (github.com/golang-jwt/jwt/v5)
+
+Frontend: Typescript, React, React router
