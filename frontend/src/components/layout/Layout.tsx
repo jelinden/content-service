@@ -13,7 +13,7 @@ export interface Profile {
     apiToken: string
 }
 
-const Layout =({children} : Props) => {
+const Layout = ({children} : Props) => {
 
     const { app, updateState } = useContext(AppContext);
     const navigate = useNavigate();
