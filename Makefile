@@ -11,6 +11,12 @@ run-local:
 	go build -o ${LOCALBINARYNAME} main.go
 	./${LOCALBINARYNAME}
 
+build-prod:
+	make clean
+	cd frontend && npm install && npm run build && cd ..
+	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go
+	./${BINARY_NAME}-linux
+
 clean:
 	go clean
 	rm ${BINARY_NAME}-linux || true
