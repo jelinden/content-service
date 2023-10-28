@@ -13,6 +13,7 @@ run-local:
 
 build-prod:
 	make clean
+	mkdir -p public
 	cd frontend && npm install && npm run build && cd ..
 	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go
 	nohup ./${BINARY_NAME}-linux > content-service.log 2>&1 &
