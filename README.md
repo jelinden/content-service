@@ -20,13 +20,33 @@ and add content after which you can get content for example to your web site fro
 
 https://content-service.jelinden.fi/api/space/:spaceID/entries?token=YOUR_TOKEN_FROM_PROFILE
 
-## run backend
+## run backend and frontend with makefile
+
+`make run-local`
+
+does the following:
+
+```
+run-local:
+	make clean
+ 	cd frontend && npm run build && cd .. // run build makes a production build and copies it to be served from go server
+ 	go build -o content-service-arm main.go // build the binary
+ 	./content-service-arm  // run the binary
+ ```
+
+
+## run backend independently
 
 `go build && ./content-service`
 
 or
 
 `go run main.go`
+
+## run frontend independently
+
+`cd frontend && npm install && npm run start`
+
 
 ## environment variable JWT_KEY
 
@@ -40,3 +60,8 @@ Then this environment variable is used in authorize.go
 
 `secretKey = os.Getenv("JWT_KEY")`
 
+## tech used
+
+Backend: Golang, router github.com/julienschmidt/httprouter, database sqlite, JWT tokens (github.com/golang-jwt/jwt/v5)
+
+Frontend: Typescript, React, React router
