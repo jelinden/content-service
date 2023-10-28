@@ -42,9 +42,9 @@ func testAddSpace(t *testing.T) {
 		t.Fail()
 	}
 	log.Println(content)
-	assert.True(t, len(content) > 0)
-	assert.Equal(t, content[0].Name, "key")
-	assert.Equal(t, content[0].Value, "value")
+	assert.True(t, len(content.Content) > 0)
+	assert.Equal(t, content.Content[0].Name, "key")
+	assert.Equal(t, content.Content[0].Value, "value")
 }
 
 func postTestSpace() {

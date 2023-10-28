@@ -58,7 +58,7 @@ func GetSpacesWithUserID(userID int64) ([]domain.Space, error) {
 	return spaces, nil
 }
 
-func GetSpaceContentWithUserID(spaceID, userID int64) ([]domain.Content, error) {
+func GetSpaceContentWithUserID(spaceID, userID int64) (domain.Data, error) {
 	db := DB()
 	rows, err := db.Query(`
 		select c.key, c.value
@@ -77,14 +77,14 @@ func GetSpaceContentWithUserID(spaceID, userID int64) ([]domain.Content, error) 
 	for rows.Next() {
 		var c domain.Content
 		if err := rows.Scan(&c.Name, &c.Value); err != nil {
-			return content, err
+			return domain.Data{Content: content}, err
 		}
 		content = append(content, c)
 	}
 	if err = rows.Err(); err != nil {
-		return content, err
+		return domain.Data{Content: content}, err
 	}
-	return content, nil
+	return domain.Data{Content: content}, nil
 }
 
 func GetSpace(id int64) domain.Space {
