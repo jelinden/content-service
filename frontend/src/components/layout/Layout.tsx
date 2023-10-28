@@ -41,7 +41,12 @@ const Layout = ({children} : Props) => {
                     }
                 })
                 .catch(err => {
-                    console.log(err)
+                    if (err.message.includes('Not authorized')) {
+                        const path = window.location.pathname
+                        if (!(path.includes('/login') || path.includes('/register') || path === '/')) {
+                            navigate("/login");
+                        }
+                    }
                 })
         }
 
