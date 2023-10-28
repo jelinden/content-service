@@ -15,7 +15,7 @@ build-prod:
 	make clean
 	cd frontend && npm install && npm run build && cd ..
 	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go
-	nohup ${BINARY_NAME}-linux > content-service.log 2>&1 &
+	nohup ./${BINARY_NAME}-linux > content-service.log 2>&1 &
 	echo "$!" > run.pid
 
 clean:
