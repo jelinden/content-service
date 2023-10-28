@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/jelinden/content-service/app/domain"
@@ -30,9 +31,20 @@ func testAddSpace(t *testing.T) {
 		assert.Fail(t, err.Error())
 	}
 	apiToken := util.GenerateToken(email)
-	space := AddSpace(domain.User{Username: email, Password: password, HashedPassword: password, ApiToken: apiToken}, spaceName)
+	space := AddSpace(domain.User{ID: 1, Username: email, Password: password, HashedPassword: password, ApiToken: apiToken}, spaceName)
 	assert.True(t, space[0].Name == spaceName)
 	defer RemoveSpace(space[0].ID)
+
+	AddContent(space[0].ID, "key", "value")
+	content, err := GetSpaceContentWithUserID(space[0].ID, 1)
+	if err != nil {
+		log.Println(err)
+		t.Fail()
+	}
+	log.Println(content)
+	assert.True(t, len(content) > 0)
+	assert.Equal(t, content[0].Name, "key")
+	assert.Equal(t, content[0].Value, "value")
 }
 
 func postTestSpace() {

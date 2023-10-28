@@ -52,3 +52,24 @@ func GetContentWithSpaceID(w http.ResponseWriter, req *http.Request, ps httprout
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(spaces)
 }
+
+func GetContentWithSpaceIDAndToken(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	spaceID, err := strconv.ParseInt(ps.ByName("spaceID"), 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	userID, err := strconv.ParseInt(ps.ByName("userID"), 10, 0)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	content, err := db.GetSpaceContentWithUserID(spaceID, userID)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("ERROR"))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(content)
+}

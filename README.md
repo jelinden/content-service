@@ -7,6 +7,19 @@ The purpose of this project is to make a service which has a per user possibilit
 * save key/value pairs and
 * get key/value pairs with the key through an API with an API key
 
+
+## Usage
+
+Register to https://content-service.jelinden.fi
+
+Login
+
+Make a space https://content-service.jelinden.fi/space
+
+and add content after which you can get content for example to your web site from
+
+https://content-service.jelinden.fi/api/space/:spaceID/entries?token=YOUR_TOKEN_FROM_PROFILE
+
 ## run backend
 
 `go build && ./content-service`

@@ -82,3 +82,22 @@ func RemoveUser(email string) bool {
 	log.Println("removed user", email)
 	return true
 }
+
+func GetUserWithToken(token string) domain.User {
+	db := DB()
+	log.Println("getting user with token", token)
+	stmt, err := db.Prepare("select id, email as username, password, apitoken from user where apitoken = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	var user domain.User
+	err = stmt.QueryRow(token).Scan(&user.ID, &user.Username, &user.Password, &user.ApiToken)
+	if err != nil {
+		log.Println(err)
+	}
+	stmt.Close()
+	log.Println("got user", user.Username, "with token", token)
+	return user
+}

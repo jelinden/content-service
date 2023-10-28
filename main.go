@@ -24,6 +24,8 @@ func main() {
 	router.RedirectFixedPath = true
 	router.RedirectTrailingSlash = true
 	router.GlobalOPTIONS = http.HandlerFunc(globalOptionsHandler)
+
+	// api endpoints for the frontend
 	router.POST("/api/register", CorsMiddleware(auth.Register))
 	router.POST("/api/login", CorsMiddleware(auth.Login))
 	router.POST("/api/logout", CorsMiddleware(auth.Logout))
@@ -37,12 +39,18 @@ func main() {
 	router.DELETE("/api/content/:id", auth.AuthorizeMiddleware(routes.RemoveContent))
 	router.GET("/api/content/:spaceID", auth.AuthorizeMiddleware(routes.GetContentWithSpaceID))
 
+	// client/customer endpoint to get entries
+	router.GET("/api/space/:spaceID/entries", auth.TokenAuth(routes.GetContentWithSpaceIDAndToken))
+
+	// return html for each page
 	router.GET("/", index)
 	router.GET("/register", index)
 	router.GET("/login", index)
 	router.GET("/space", index)
 	router.GET("/content/*catchall", index)
 	router.GET("/profile", index)
+
+	// health endpoint
 	router.GET("/health", health)
 
 	router.Handler("GET", "/static/*filepath", http.FileServer(http.Dir("public")))
@@ -61,10 +69,8 @@ func health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 func profile(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	decoded := context.Get(req, "decoded")
-	log.Println(decoded)
 	var user domain.User
 	mapstructure.Decode(decoded.(jwt.MapClaims), &user)
-	log.Println(user.Username, user.ID)
 	json.NewEncoder(w).Encode(user)
 }
 
