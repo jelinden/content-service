@@ -50,7 +50,7 @@ const Layout =({children} : Props) => {
 
     return(
         <>
-            <div>
+            <div style={{borderBottom: '1px solid grey', backgroundColor: '#D7E4FF', paddingTop:'1px'}}>
                 <ul>
                     <li className='links'><Link to="/">Home</Link></li>
                     { app && app.username &&
