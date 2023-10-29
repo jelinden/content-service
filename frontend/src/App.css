@@ -28,6 +28,7 @@ button {
     transform: rotate(360deg);
   }
 }
+
 .loading-spinner {
   width: 30px;
   height: 30px;
@@ -95,3 +96,6 @@ main {
   position: relative;
   height: 100vh;
 }
+
+.navigation a { color: white; }
+.navigation a:hover { color: lightgray; }
