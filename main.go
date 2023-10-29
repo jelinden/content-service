@@ -53,7 +53,15 @@ func main() {
 	// health endpoint
 	router.GET("/health", health)
 
-	router.Handler("GET", "/static/*filepath", http.FileServer(http.Dir("public")))
+	// static files
+	fileServer := http.FileServer(http.Dir("public"))
+	router.GET("/static/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		w.Header().Set("Vary", "Accept-Encoding")
+		w.Header().Set("Cache-Control", "public, max-age=7776000")
+		r.URL.Path = "/static" + p.ByName("filepath")
+		fileServer.ServeHTTP(w, r)
+	})
+
 	log.Println("Started a server at port", port)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(port), router))
 }
