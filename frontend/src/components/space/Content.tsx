@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { AppContext } from '../context/AppContext';
 import { Get, Post, Delete } from '../service/http'
 
@@ -12,6 +12,7 @@ interface Content {
 const Content = () => {
     const params = useParams()
     const { app } = useContext(AppContext);
+    const navigate = useNavigate();
     const userId = app?.id!!
     const [ content = [], updateContent ] = useState<Content[]>();
     const spaceID = Number(params.spaceID)
@@ -71,7 +72,7 @@ const Content = () => {
                     <div key={d.id} style={{lineHeight: '35px', width: '400px', display: 'flex', justifyContent: 'space-between'}}>
                         <span>{d.name}</span><span>{d.value}</span>
                         <button value={d.id} 
-                            style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '10px'}} 
+                            style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '8px'}} 
                             onClick={removeContent} type="button">Remove</button>
                     </div>
                 ))
@@ -89,8 +90,8 @@ const Content = () => {
                 </div>
                 <button id="login-button" type="submit">Create</button>
             </form>
-
-           
+            <button onClick={() => navigate('/space')} type="button"
+                style={{marginLeft: '5px', display: 'inline-block', marginTop: '20px', padding: '10px 15px 10px 15px'}}>Back</button>
         </>
     )
 }
