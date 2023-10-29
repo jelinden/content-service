@@ -18,6 +18,7 @@ button {
 .links {
   display: inline-block;
   padding-right: 15px;
+  color: lightgray;
 }
 
 @keyframes spinner {
