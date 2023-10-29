@@ -49,6 +49,7 @@ func main() {
 	router.GET("/space", index)
 	router.GET("/content/*catchall", index)
 	router.GET("/profile", index)
+	router.GET("/favicon.ico", favicon)
 
 	// health endpoint
 	router.GET("/health", health)
@@ -68,6 +69,12 @@ func main() {
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	http.ServeFile(w, r, "public/index.html")
+}
+
+func favicon(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	w.Header().Set("Vary", "Accept-Encoding")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	http.ServeFile(w, r, "public/favicon.ico")
 }
 
 func health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
