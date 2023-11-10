@@ -66,17 +66,21 @@ const Content = () => {
             <h1>Space {spaceID}</h1>
 
             <h2>Your Content</h2>
+            <table>
             {
-                content &&
-                content.map((d) => (
-                    <div key={d.id} style={{lineHeight: '35px', width: '400px', display: 'flex', justifyContent: 'space-between'}}>
-                        <span>{d.name}</span><span>{d.value}</span>
-                        <button value={d.id} 
+                content && content.map((d) => (
+                    
+                    <tr key={d.id} style={{lineHeight: '35px', minWidth: '450px'}} className="border-bottom">
+                        <td>{d.name}</td>
+                        <td>{d.value}</td>
+                        <td><button value={d.id} 
                             style={{marginLeft: '15px', height: '24px', display: 'inline-block', marginTop: '8px'}} 
-                            onClick={removeContent} type="button">Remove</button>
-                    </div>
+                            onClick={removeContent} type="button">Remove</button></td>
+                    </tr>
+                    
                 ))
             }
+            </table>
             <br />
             <h2>Add Content name and value</h2>
             <form onSubmit={newContent}>
