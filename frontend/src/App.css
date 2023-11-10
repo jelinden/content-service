@@ -100,3 +100,8 @@ main {
 
 .navigation a { color: white; }
 .navigation a:hover { color: lightgray; }
+td { padding-right: 30px; max-width: 380px; }
+tr { max-width: 350px; }
+.border-bottom td {
+  border-bottom: 1px solid black;
+}
