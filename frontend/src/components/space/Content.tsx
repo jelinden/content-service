@@ -84,13 +84,15 @@ const Content = () => {
             <br />
             <h2>Add Content name and value</h2>
             <form onSubmit={newContent}>
-                <div>
-                    <label htmlFor="name">Content name</label>
-                    <input id="name" type="text" name="name" />
-                </div>
-                <div>
-                    <label htmlFor="name">Content value</label>
-                    <textarea id="value" name="value" />
+                <div style={{minHeight: '80px'}}>
+                    <div>
+                        <label htmlFor="name">Content name</label>
+                        <input id="name" type="text" name="name" />
+                    </div>
+                    <div>
+                        <label htmlFor="name">Content value</label>
+                        <textarea id="value" name="value" />
+                    </div>
                 </div>
                 <button className="button" id="login-button" type="submit">Create</button>
                 <button className="back" onClick={(event) => {
