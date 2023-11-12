@@ -92,10 +92,13 @@ const Content = () => {
                     <label htmlFor="name">Content value</label>
                     <textarea id="value" name="value" />
                 </div>
-                <button id="login-button" type="submit">Create</button>
+                <button className="button" id="login-button" type="submit">Create</button>
+                <button className="back" onClick={(event) => {
+                        event.preventDefault()
+                        navigate('/space')
+                    }} type="button">Back</button>
             </form>
-            <button onClick={() => navigate('/space')} type="button"
-                style={{marginLeft: '5px', display: 'inline-block', marginTop: '20px', padding: '10px 15px 10px 15px'}}>Back</button>
+            
         </>
     )
 }

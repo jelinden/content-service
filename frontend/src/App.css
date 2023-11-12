@@ -15,6 +15,14 @@ button {
   border: none;
 }
 
+.back {
+  margin-left: 5px;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 15px 8px 15px;
+  background-color: #262727;
+}
+
 .links {
   display: inline-block;
   padding-right: 15px;
