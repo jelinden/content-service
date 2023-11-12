@@ -105,3 +105,7 @@ tr { max-width: 350px; }
 .border-bottom td {
   border-bottom: 1px solid black;
 }
+
+textarea {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
