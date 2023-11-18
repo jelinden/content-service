@@ -3,7 +3,7 @@
 The purpose of this project is to make a service which has a per user possibility to 
 * register
 * login
-* save an API key for themselfs
+* save a API key for themselfs
 * save key/value pairs and
 * get key/value pairs with the key through an API with an API key
 
@@ -20,7 +20,9 @@ and add content after which you can get content for example to your web site fro
 
 https://content-service.jelinden.fi/api/space/:spaceID/entries?token=YOUR_TOKEN_FROM_PROFILE
 
-## run backend and frontend with makefile
+Remember cors-issues though, it is better to proxy the content through a server on your domain.
+
+## Run backend and frontend with makefile
 
 `make run-local`
 
@@ -35,7 +37,7 @@ run-local:
  ```
 
 
-## run backend independently
+## Run backend independently
 
 `go build && ./content-service`
 
@@ -43,12 +45,12 @@ or
 
 `go run main.go`
 
-## run frontend independently
+## Run frontend independently
 
 `cd frontend && npm install && npm run start`
 
 
-## environment variable JWT_KEY
+## Environment variable JWT_KEY when running the server
 
 For JWT we need a secret key with witch we make the token for the user/browser.
 
@@ -60,7 +62,7 @@ Then this environment variable is used in authorize.go
 
 `secretKey = os.Getenv("JWT_KEY")`
 
-## tech used
+## Tech used
 
 Backend: Golang, router github.com/julienschmidt/httprouter, database sqlite, JWT tokens (github.com/golang-jwt/jwt/v5)
 
