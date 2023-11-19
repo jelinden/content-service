@@ -36,6 +36,10 @@ run-local:
  	./content-service-arm  // run the binary
  ```
 
+## Run backend tests
+
+`go test ./...`
+
 
 ## Run backend independently
 
@@ -67,3 +71,8 @@ Then this environment variable is used in authorize.go
 Backend: Golang, router github.com/julienschmidt/httprouter, database sqlite, JWT tokens (github.com/golang-jwt/jwt/v5)
 
 Frontend: Typescript, React, React router
+
+## Database
+
+Database is embedded and creates a file of its own to the directory the app is running. As long as nothing is done to it, the content is preserved.
+Restarting the service doesn't do anything to the file.
