@@ -22,6 +22,15 @@ https://content-service.jelinden.fi/api/space/:spaceID/entries?token=YOUR_TOKEN_
 
 Remember cors-issues though, it is better to proxy the content through a server on your domain.
 
+## Prerequirements
+
+Install Go: https://go.dev/doc/install
+
+Install make: https://sp21.datastructur.es/materials/guides/make-install.html
+(needed if using make command, not mandatory)
+
+Install node: https://nodejs.org/en/download
+
 ## Run backend and frontend with makefile
 
 `make run-local`
@@ -35,6 +44,8 @@ run-local:
  	go build -o content-service-arm main.go // build the binary
  	./content-service-arm  // run the binary
  ```
+
+You can also run the commands separately.
 
 ## Run backend tests
 
