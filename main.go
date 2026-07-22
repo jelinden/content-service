@@ -56,10 +56,10 @@ func main() {
 
 	// static files
 	fileServer := http.FileServer(http.Dir("public"))
-	router.GET("/static/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	router.GET("/assets/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		w.Header().Set("Vary", "Accept-Encoding")
 		w.Header().Set("Cache-Control", "public, max-age=7776000")
-		r.URL.Path = "/static" + p.ByName("filepath")
+		r.URL.Path = "/assets" + p.ByName("filepath")
 		fileServer.ServeHTTP(w, r)
 	})
 
@@ -68,7 +68,7 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	http.ServeFile(w, r, "public/index.html")
+	http.ServeFile(w, r, "public/public/index.html")
 }
 
 func favicon(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
