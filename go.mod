@@ -1,6 +1,6 @@
 module github.com/jelinden/content-service
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
@@ -9,7 +9,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/crypto v0.45.0
+	golang.org/x/crypto v0.52.0
 )
 
 require (
